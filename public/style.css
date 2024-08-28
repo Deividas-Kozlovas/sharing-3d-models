@@ -1,0 +1,63 @@
+/* style.css */
+
+/* Set a dark background for the entire body */
+body, html {
+    background-color: #121212 !important;
+    color: #ffffff;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+/* Ensure the container has proper spacing and background */
+.container {
+    padding: 20px;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+/* Style the header's navigation links */
+header .nav {
+    background-color: #2a2a2a;
+    border-radius: 8px;
+    padding: 10px;
+}
+
+header .nav-link {
+    color: #ffffff;
+    margin-right: 15px;
+}
+
+header .nav-link.active {
+    font-weight: bold;
+    color: #b8b8b8;
+}
+
+header .nav-link:hover {
+    color: #cfcfcf;
+}
+
+header .nav-link.disabled {
+    color: #6c757d;
+}
+
+/* Centered text for the row and columns */
+.text-center {
+    text-align: center;
+    padding: 20px;
+}
+
+/* Style individual columns */
+.row .col {
+    background-color: #292929;
+    padding: 20px;
+    margin: 10px 0;
+    border-radius: 8px;
+}
+
+/* Add some hover effects for columns */
+.row .col:hover {
+    background-color: #343434;
+}
