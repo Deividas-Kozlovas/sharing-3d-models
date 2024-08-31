@@ -1,31 +1,20 @@
+// routes/registerRouter.js
 const express = require('express');
-const mongoose = require('mongoose');
+const { body } = require('express-validator');
+const registerController = require('../controllers/registerController');
 
-module.exports = (User) => {
-  const router = express.Router();
+const router = express.Router();
 
-  // Handle POST request to /submit-registration
-  router.post('/submit-registration', async (req, res) => {
-    const { email, password, repeatPassword } = req.body;
+// Define the registration route with validation
+router.post(
+    '/submit-registration',
+    [
+        // Validate inputs
+        body('email').isEmail().withMessage('Enter a valid email'),
+        body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
+        body('repeatPassword').custom((value, { req }) => value === req.body.password).withMessage('Passwords do not match'),
+    ],
+    registerController.registerUser
+);
 
-    if (password !== repeatPassword) {
-      return res.status(400).send('Passwords do not match!');
-    }
-
-    try {
-      // Save form data to MongoDB
-      const newUser = new User({
-        email: email,
-        password: password
-      });
-
-      await newUser.save(); // Use async/await to handle saving
-      res.send('Form submitted successfully!');
-    } catch (err) {
-      console.error(err); // Log the error
-      res.status(500).send('Error saving data!');
-    }
-  });
-
-  return router;
-};
+module.exports = router;
