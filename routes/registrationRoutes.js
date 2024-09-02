@@ -1,9 +1,14 @@
-// routes/registerRouter.js
 const express = require('express');
 const { body } = require('express-validator');
+const path = require('path'); // Import path module
 const registerController = require('../controllers/registerController');
 
 const router = express.Router();
+
+// Route for user registration form
+router.get('/registration', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/registration/registration.html'));
+});
 
 // Define the registration route with validation
 router.post(

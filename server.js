@@ -19,7 +19,7 @@ mongoose.connect('mongodb://localhost:27017/registrationDB', {
 });
 
 // Import and use routes for registration
-const registrationRoutes = require('./routes/registerRouter');
+const registrationRoutes = require('./routes/registrationRoutes');
 app.use('/', registrationRoutes); // Routes for user registration
 
 // Start the server
