@@ -1,8 +1,8 @@
-// server.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
 const mongoose = require('mongoose');
+const session = require('express-session');
 const app = express();
 const port = 3000;
 
@@ -12,15 +12,24 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Serve static files (CSS, JS, etc.) from the 'public' directory
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Connect to MongoDB (use your correct MongoDB URL)
+// Session middleware
+app.use(session({
+    secret: 'your_secret_key', // Replace with your own secret
+    resave: false,
+    saveUninitialized: true,
+}));
+
+// Connect to MongoDB
 mongoose.connect('mongodb://localhost:27017/registrationDB', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
 
-// Import and use routes for registration
+// Import and use routes for registration and login
 const registrationRoutes = require('./routes/registrationRoutes');
+const loginRoutes = require('./routes/loginRoutes');
 app.use('/', registrationRoutes); // Routes for user registration
+app.use('/', loginRoutes); // Routes for user login
 
 // Start the server
 app.listen(port, () => {
