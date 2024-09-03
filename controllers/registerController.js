@@ -12,14 +12,23 @@ exports.registerUser = async (req, res) => {
     const { email, password } = req.body;
 
     try {
-        // Hash password
+        // Check if the user already exists
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).send('User already exists');
+        }
+
+        // Hash the password
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        // Create and save new user
+        // Create a new user
         const newUser = new User({ email, password: hashedPassword });
         await newUser.save();
 
-        // Redirect to index page after successful registration
+        // Create a session
+        req.session.userId = newUser._id;
+
+        // Redirect to the dashboard
         res.redirect('/dashboard');
     } catch (error) {
         console.error(error);

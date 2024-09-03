@@ -32,8 +32,8 @@ const registerRoutes = require('./routes/registrationRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 
 // Mount routes
-app.use('/', loginRoutes);  // Mount loginRoutes at /
-app.use('/', registerRoutes);  // Mount registerRoutes at /
+app.use('/login', loginRoutes);  // Mount loginRoutes at /
+app.use('/register', registerRoutes);  // Mount registerRoutes at /
 app.use('/dashboard', dashboardRoutes); // Mount dashboardRoutes at /dashboard
 
 // Start the server
