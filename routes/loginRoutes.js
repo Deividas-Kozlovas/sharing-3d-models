@@ -1,10 +1,8 @@
 const express = require('express');
 const { body, validationResult } = require('express-validator');
 const path = require('path');
-const loginController = require('../controllers/loginController');
 const User = require('../models/User');
-const bcrypt = require('bcrypt');
-
+const bcrypt = require('bcryptjs');
 const router = express.Router();
 
 // Route for login form
@@ -12,7 +10,7 @@ router.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/login/login.html'));
 });
 
-// Route to handle login form submission
+// Handle login form submission
 router.post(
     '/submit-login',
     [
@@ -40,7 +38,9 @@ router.post(
 
             // Create session
             req.session.userId = user._id;
-            res.redirect('/dashboard'); // Redirect to a protected route or dashboard
+
+            // Redirect to the dashboard
+            res.redirect('/dashboard');
         } catch (error) {
             console.error(error);
             res.status(500).send('Server error');

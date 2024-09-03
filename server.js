@@ -8,28 +8,33 @@ const port = 3000;
 
 // Middleware to parse URL-encoded bodies
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
 
-// Serve static files (CSS, JS, etc.) from the 'public' directory
+// Serve static files (CSS, JS, etc.)
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Session middleware
 app.use(session({
-    secret: 'your_secret_key', // Replace with your own secret
+    secret: 'your_secret_key',
     resave: false,
     saveUninitialized: true,
 }));
 
-// Connect to MongoDB
+// MongoDB connection
 mongoose.connect('mongodb://localhost:27017/registrationDB', {
     useNewUrlParser: true,
     useUnifiedTopology: true,
 });
 
-// Import and use routes for registration and login
-const registrationRoutes = require('./routes/registrationRoutes');
+// Import routes
 const loginRoutes = require('./routes/loginRoutes');
-app.use('/', registrationRoutes); // Routes for user registration
-app.use('/', loginRoutes); // Routes for user login
+const registerRoutes = require('./routes/registrationRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
+
+// Mount routes
+app.use('/', loginRoutes);  // Mount loginRoutes at /
+app.use('/', registerRoutes);  // Mount registerRoutes at /
+app.use('/dashboard', dashboardRoutes); // Mount dashboardRoutes at /dashboard
 
 // Start the server
 app.listen(port, () => {
