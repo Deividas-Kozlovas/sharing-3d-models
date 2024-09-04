@@ -61,9 +61,18 @@ async function validateForm(event) {
 
 async function registerUser(formData) {
     try {
+        // Convert FormData to a JSON object
+        const formDataObj = {};
+        formData.forEach((value, key) => {
+            formDataObj[key] = value;
+        });
+
         const response = await fetch('/register/submit-registration', {
             method: 'POST',
-            body: formData
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formDataObj)
         });
 
         if (response.ok) {
@@ -81,6 +90,7 @@ async function registerUser(formData) {
         console.error('Error during registration:', error);
     }
 }
+
 
 function clearErrors() {
     const existingErrorDiv = document.querySelector('.alert');

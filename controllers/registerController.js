@@ -1,16 +1,16 @@
-// controllers/registerController.js
-const User = require('../models/User');
+const User = require('../models/User'); // Only one declaration of User
+
 const { validationResult } = require('express-validator');
 
-// controllers/registerController.js
-const User = require('../models/User');
 const { validationResult } = require('express-validator');
 
 exports.registerUser = async (req, res) => {
-    console.log('registerUser route hit'); // Log to check if the route is hit
+    console.log('registerUser route hit');
+    console.log('Request Body:', req.body);
 
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+        console.log('Validation Errors:', errors.array());
         return res.status(400).json({ error: 'Invalid input', details: errors.array() });
     }
 
@@ -32,7 +32,6 @@ exports.registerUser = async (req, res) => {
     }
 };
 
-// registerController.js
 exports.checkEmail = async (req, res) => {
     const { email } = req.body;
 
