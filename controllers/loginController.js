@@ -1,3 +1,4 @@
+// controllers/loginController.js
 const User = require('../models/User');
 const bcrypt = require('bcryptjs');
 const { validationResult } = require('express-validator');
@@ -22,7 +23,8 @@ exports.loginUser = async (req, res) => {
         }
 
         req.session.userId = user._id;
-        return res.json({ message: 'Login successful' }); // Success response
+        return res.json({ message: 'Login successful' });
+
     } catch (error) {
         console.error('Server error:', error);
         return res.status(500).json({ error: 'Server error' });
