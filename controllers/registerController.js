@@ -1,37 +1,49 @@
 // controllers/registerController.js
 const User = require('../models/User');
-const bcrypt = require('bcryptjs');
+const { validationResult } = require('express-validator');
+
+// controllers/registerController.js
+const User = require('../models/User');
 const { validationResult } = require('express-validator');
 
 exports.registerUser = async (req, res) => {
+    console.log('registerUser route hit'); // Log to check if the route is hit
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-        return res.status(400).json({ errors: errors.array() });
+        return res.status(400).json({ error: 'Invalid input', details: errors.array() });
     }
 
     const { email, password } = req.body;
 
     try {
-        // Check if the user already exists
         const existingUser = await User.findOne({ email });
         if (existingUser) {
-            return res.status(400).send('User already exists');
+            return res.status(400).json({ error: 'User already exists' });
         }
 
-        // Hash the password
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        // Create a new user
-        const newUser = new User({ email, password: hashedPassword });
+        const newUser = new User({ email, password });
         await newUser.save();
 
-        // Create a session
-        req.session.userId = newUser._id;
-
-        // Redirect to the dashboard
-        res.redirect('/dashboard');
+        return res.json({ message: 'Registration successful' });
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Server error');
+        console.error('Server error:', error);
+        return res.status(500).json({ error: 'Server error' });
+    }
+};
+
+// registerController.js
+exports.checkEmail = async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.json({ error: 'User already exists' });
+        }
+        return res.json({ success: true });
+    } catch (error) {
+        console.error('Server error:', error);
+        return res.status(500).json({ error: 'Server error' });
     }
 };

@@ -10,7 +10,7 @@ router.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/registration/registration.html'));
 });
 
-// Handle registration form submission using the controller
+// Handle registration form submission
 router.post(
     '/submit-registration',
     [
@@ -18,7 +18,10 @@ router.post(
         body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long'),
         body('repeatPassword').custom((value, { req }) => value === req.body.password).withMessage('Passwords do not match'),
     ],
-    registerController.registerUser // Calls the controller method for handling registration
+    registerController.registerUser
 );
+
+// Handle email check
+router.post('/check-email', registerController.checkEmail);
 
 module.exports = router;

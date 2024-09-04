@@ -1,4 +1,3 @@
-// routes/loginRoutes.js
 const express = require('express');
 const { body } = require('express-validator');
 const path = require('path');

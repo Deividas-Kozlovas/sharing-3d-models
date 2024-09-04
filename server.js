@@ -1,3 +1,4 @@
+// app.js or server.js
 const express = require('express');
 const bodyParser = require('body-parser');
 const path = require('path');
@@ -6,11 +7,11 @@ const session = require('express-session');
 const app = express();
 const port = 3000;
 
-// Middleware to parse URL-encoded bodies
+// Middleware to parse URL-encoded bodies and JSON
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-// Serve static files (CSS, JS, etc.)
+// Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Session middleware
@@ -32,9 +33,9 @@ const registerRoutes = require('./routes/registrationRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 
 // Mount routes
-app.use('/login', loginRoutes);  // Mount loginRoutes at /
-app.use('/register', registerRoutes);  // Mount registerRoutes at /
-app.use('/dashboard', dashboardRoutes); // Mount dashboardRoutes at /dashboard
+app.use('/login', loginRoutes);
+app.use('/register', registerRoutes);
+app.use('/dashboard', dashboardRoutes);
 
 // Start the server
 app.listen(port, () => {
