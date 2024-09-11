@@ -5,10 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>3D Model Sharing Platform Dashboard</title>
 
+    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="dashboardStyles.css">
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="dashboard.css">
 </head>
 <body>
+    <!-- Sidebar -->
     <div class="d-flex">
         <nav class="sidebar bg-dark text-white p-3">
             <h2 class="text-center">Dashboard</h2>
@@ -21,21 +24,32 @@
                 <li class="nav-item"><a class="nav-link text-white" href="#">Settings</a></li>
             </ul>
         </nav>
+
+        <!-- Main Content -->
         <div class="main-content p-4">
             <h1>Welcome to Your Dashboard</h1>
-                        <div class="card mb-4">
+            
+            <!-- Upload Section -->
+            <div class="card mb-4">
                 <div class="card-body">
                     <h2>Upload New 3D Model</h2>
-                    <div class="input-group">
-                        <input type="file" class="form-control" id="modelUpload">
-                        <button class="btn btn-primary">Upload</button>
-                    </div>
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="modelFile" class="form-label">Upload STL File</label>
+                            <input type="file" class="form-control" id="modelFile" name="modelFile" accept=".stl" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Upload</button>
+                    </form>
+                    <div id="uploadStatus"></div>
                 </div>
             </div>
+
+            <!-- My Models Section -->
             <div class="card mb-4">
                 <div class="card-body">
                     <h2>My Models</h2>
                     <div class="model-list">
+                        <!-- Example model item -->
                         <div class="model-item border-bottom pb-3 mb-3">
                             <h3>Model 1</h3>
                             <p>Views: 120 | Downloads: 45 | Likes: 30</p>
@@ -46,9 +60,12 @@
                                 <button class="btn btn-outline-success btn-sm">Share</button>
                             </div>
                         </div>
+                        <!-- Repeat model items -->
                     </div>
                 </div>
             </div>
+
+            <!-- Analytics Section -->
             <div class="card">
                 <div class="card-body">
                     <h2>Analytics</h2>
@@ -60,6 +77,10 @@
         </div>
     </div>
 
+    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="uploadModel.js"></script>
 </body>
 </html>
