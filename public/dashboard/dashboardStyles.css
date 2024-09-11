@@ -1,0 +1,20 @@
+.sidebar {
+    min-width: 200px;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.main-content {
+    margin-left: 220px; 
+    padding: 20px;
+}
+
+.model-item {
+    padding: 10px 0;
+}
+
+.actions button {
+    margin-right: 10px;
+}
