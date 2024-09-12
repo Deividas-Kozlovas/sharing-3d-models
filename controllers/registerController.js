@@ -1,8 +1,6 @@
 const User = require('../models/User'); // Only one declaration of User
-
 const { validationResult } = require('express-validator');
-
-const { validationResult } = require('express-validator');
+const bcrypt = require('bcryptjs'); 
 
 exports.registerUser = async (req, res) => {
     console.log('registerUser route hit');
@@ -22,7 +20,8 @@ exports.registerUser = async (req, res) => {
             return res.status(400).json({ error: 'User already exists' });
         }
 
-        const newUser = new User({ email, password });
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = new User({ email, password: hashedPassword });
         await newUser.save();
 
         return res.json({ message: 'Registration successful' });

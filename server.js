@@ -1,21 +1,22 @@
-// app.js or server.js
 const express = require('express');
-const bodyParser = require('body-parser');
 const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
+const RedisStore = require('connect-redis').default;
+const redisClient = require('./redisClient');
 const app = express();
 const port = 3000;
 
 // Middleware to parse URL-encoded bodies and JSON
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
 // Serve static files
 app.use(express.static(path.join(__dirname, 'public')));
 
 // Session middleware
 app.use(session({
+    store: new RedisStore({ client: redisClient }),
     secret: 'your_secret_key',
     resave: false,
     saveUninitialized: true,
