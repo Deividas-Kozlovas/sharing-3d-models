@@ -37,13 +37,15 @@ mongoose.connect('mongodb://localhost:27017/registrationDB', {
 const loginRoutes = require('./routes/loginRoutes');
 const registerRoutes = require('./routes/registrationRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
-const modelRoutes = require('./routes/modelRoutes'); // Ensure this file exists and is correctly set up
+const modelRoutes = require('./routes/modelRoutes');
+const modelsListRoutes = require('./routes/modelListRoutes')
 
 // Mount routes
 app.use('/login', loginRoutes);
 app.use('/register', registerRoutes);
 app.use('/dashboard', dashboardRoutes);
-app.use('/model', modelRoutes); // Ensure this matches your route setup
+app.use('/model', modelRoutes); 
+app.use('/model-list', modelsListRoutes);
 
 // Start the server
 app.listen(port, () => {
