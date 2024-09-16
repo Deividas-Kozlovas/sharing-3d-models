@@ -38,7 +38,7 @@ const loginRoutes = require('./routes/loginRoutes');
 const registerRoutes = require('./routes/registrationRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const modelRoutes = require('./routes/modelRoutes');
-const modelsListRoutes = require('./routes/modelListRoutes')
+const modelsListRoutes = require('./routes/modelListRoutes');
 
 // Mount routes
 app.use('/login', loginRoutes);

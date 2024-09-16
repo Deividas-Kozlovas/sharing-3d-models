@@ -1,12 +1,12 @@
 const express = require('express');
-const { body } = require('express-validator');
 const path = require('path');
+const modelController = require('../controllers/modelsController'); // Ensure this path is correct
 const router = express.Router();
-const loginController = require('../controllers/loginController');
 
-// Route for login form
-router.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/modelList/modelListRoutes.html'));
-});
+// Serve the static HTML page
+router.get('/', modelController.getModelListPage);
+
+// Endpoint to get all models
+router.get('/all', modelController.getAllModels);
 
 module.exports = router;

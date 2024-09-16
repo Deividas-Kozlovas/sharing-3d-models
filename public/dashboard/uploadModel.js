@@ -9,15 +9,14 @@ document.getElementById('uploadForm').addEventListener('submit', async function 
     statusDiv.innerHTML = 'Uploading...';
 
     try {
-        const response = await fetch('/model/upload-model', { // Correct route
+        const response = await fetch('/model/upload-model', {
             method: 'POST',
             body: formData
         });
-    
-        // Log Content-Type for debugging
+
         const contentType = response.headers.get('Content-Type');
         console.log('Response Content-Type:', contentType);
-    
+
         if (contentType && contentType.includes('application/json')) {
             const result = await response.json();
             if (response.ok) {
