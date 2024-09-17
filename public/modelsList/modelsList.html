@@ -1,26 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="./modelsListStyles.css" rel="stylesheet">
     <title>3D Models Gallery</title>
+    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+    <script type="importmap">
+    {
+        "imports": {
+            "three": "https://unpkg.com/three@0.149.0/build/three.module.js",
+            "three/examples/jsm/loaders/STLLoader": "https://unpkg.com/three@0.149.0/examples/jsm/loaders/STLLoader.js"
+        }
+    }
+    </script>
 </head>
-
 <body>
     <div class="container my-5">
         <h1 class="text-center mb-4">3D Models Gallery</h1>
-        
         <div class="row row-cols-1 row-cols-md-3 g-4" id="modelGallery">
             <!-- Dynamic content will be inserted here -->
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="./modelsListScript.js"></script>
+    <!-- Your script using modules -->
+    <script type="module">
+        import * as THREE from 'three';
+        import { STLLoader } from 'three/examples/jsm/loaders/STLLoader';
+
+        document.addEventListener('DOMContentLoaded', async function() {
+            const modelGallery = document.getElementById('modelGallery');
+
+            try {
+                const response = await fetch('/model-list/user-all');
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const models = await response.json();
+                console.log(models);
+                modelGallery.innerHTML = '';
+
+                models.forEach(model => {
+                    const cardHtml = `
+                        <div class="col">
+                            <div class="card h-100">
+                                <div class="card-body">
+                                    <h5 class="model-title">${model.fileName}</h5>
+                                    <p class="card-text">Uploaded on ${new Date(model.uploadDate).toLocaleDateString()}</p>
+                                    <div id="modelViewer-${model._id}" style="width: 100%; height: 300px;"></div>
+                                </div>
+                                <div class="card-footer">
+                                    <a href="/uploads/${model.filePath.split('/').pop()}" class="btn btn-primary">Download Model</a>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    modelGallery.innerHTML += cardHtml;
+                    load3DModel(`/uploads/${model.filePath.split('/').pop()}`, `modelViewer-${model._id}`);
+                });
+            } catch (error) {
+                console.error('Error loading models:', error);
+            }
+        });
+
+        function load3DModel(modelUrl, containerId) {
+            const container = document.getElementById(containerId);
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ antialias: true });
+            renderer.setSize(container.clientWidth, container.clientHeight);
+            container.appendChild(renderer.domElement);
+
+            // Add a grid helper to the scene
+            const gridHelper = new THREE.GridHelper(10, 10);
+            scene.add(gridHelper);
+
+            // Add a bounding box helper
+            const axesHelper = new THREE.AxesHelper(5);
+            scene.add(axesHelper);
+
+            // Add lighting to the scene
+            const ambientLight = new THREE.AmbientLight(0x404040, 2); // Increased intensity
+            scene.add(ambientLight);
+            const directionalLight = new THREE.DirectionalLight(0xffffff, 2); // Increased intensity
+            directionalLight.position.set(1, 1, 1).normalize();
+            scene.add(directionalLight);
+
+            const loader = new STLLoader();
+            loader.load(modelUrl, (geometry) => {
+                if (!geometry) {
+                    console.error('No geometry loaded');
+                    return;
+                }
+
+                console.log('Model loaded successfully');
+                const material = new THREE.MeshPhongMaterial({ color: 0x555555, specular: 0x111111, shininess: 200 });
+                const mesh = new THREE.Mesh(geometry, material);
+
+                mesh.rotation.x = -Math.PI / 2;
+                mesh.position.set(0, 0, 0);
+                mesh.scale.set(5, 5, 5); // Scale up the model for visibility
+                scene.add(mesh);
+
+                camera.position.z = 20; // Move the camera further back
+
+                const animate = function () {
+                    requestAnimationFrame(animate);
+                    if (mesh) {
+                        mesh.rotation.y += 0.01;
+                    }
+                    renderer.render(scene, camera);
+                };
+                animate();
+            }, undefined, (error) => {
+                console.error('An error occurred while loading the STL model:', error);
+            });
+
+            window.addEventListener('resize', () => {
+                camera.aspect = container.clientWidth / container.clientHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.clientWidth, container.clientHeight);
+            });
+        }
+    </script>
 </body>
 </html>

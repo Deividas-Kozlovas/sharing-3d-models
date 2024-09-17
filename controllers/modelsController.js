@@ -32,7 +32,6 @@ exports.addModel = (req, res) => {
 
     const userId = req.session.userId;
 
-
     const newModel = new Model({
         fileName: req.file.originalname,
         filePath: req.file.path,
