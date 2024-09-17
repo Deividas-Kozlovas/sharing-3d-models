@@ -3,17 +3,21 @@ const mongoose = require('mongoose');
 const modelSchema = new mongoose.Schema({
     fileName: {
         type: String,
-        required: true, // File name is required
+        required: true,
     },
     filePath: {
         type: String,
-        required: true, // File path where the STL file is stored
+        required: true,
     },
     uploadDate: {
         type: Date,
-        default: Date.now, // Automatically sets the upload date
+        default: Date.now,
+    },
+    userId: { // Reference the user who uploaded the model
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User', // Assuming you have a User model
+        required: true,
     }
 });
 
-// Create and export the Mongoose model
 module.exports = mongoose.model('Model', modelSchema);

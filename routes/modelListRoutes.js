@@ -7,6 +7,6 @@ const router = express.Router();
 router.get('/', modelController.getModelListPage);
 
 // Endpoint to get all models
-router.get('/all', modelController.getAllModels);
+router.get('/user-all', modelController.getAllUserModels);
 
 module.exports = router;

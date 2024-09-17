@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', async function() {
     const modelGallery = document.getElementById('modelGallery');
 
     try {
-        const response = await fetch('/model-list/all');
+        const response = await fetch('/model-list/user-all');
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
