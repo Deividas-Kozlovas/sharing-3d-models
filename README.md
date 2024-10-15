@@ -21,8 +21,8 @@ This platform allows users to upload, share, and download 3D models using a Node
  1. Clone the repository:
 
 ```bash
-git clone [repository-url]
-cd 3d-model-sharing-platform
+git clone https://github.com/Deividas-Kozlovas/sharing-3d-models.git
+cd sharing-3d-models
 ```
 
 2. Install dependencies: Make sure you have Node.js and npm installed. Run the following command to install the necessary packages:
